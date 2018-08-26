@@ -1,0 +1,13 @@
+- defaults:
+    link:
+        relink: true
+
+- clean: ['~']
+
+- link:
+    ~/.bash_profile:
+    ~/.bashrc:
+    ~/.dotfiles: ''
+    ~/.gitconfig:
+    ~/.vim:
+    ~/.vimrc: vim/vimrc
