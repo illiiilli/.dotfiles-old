@@ -1,0 +1,3 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_1='D:/Users/Alan Chen Desktop/Google Drive/Alan Chen/Study/Uni/Semester 2/CITS2002/Labs/Lab2'
