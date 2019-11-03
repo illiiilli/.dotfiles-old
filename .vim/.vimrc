@@ -96,8 +96,8 @@ inoremap <C-U> <C-G>u<C-U>
 
 " vim:set ft=vim et sw=2:
 
-" Alan's modifications start here
-"
+" Alan's modifications start here:
+
 " show existing tab with 4 spaces width
 set tabstop=4
 " when indenting with '>', use 4 spaces width
@@ -110,9 +110,15 @@ set number
 
 if has('gui_running')
     set guioptions-=T  "remove toolbar
+    " Sets font to M+ mn
     set guifont=M+_1m:h11:cSHIFTJIS:qDRAFT
 endif
 
 colorscheme jellybeans
 
+" Remaps "jj" to <Esc> while in insert mode
 inoremap jj <Esc>
+
+call plug#begin()
+    Plug 'junegunn/goyo.vim'
+call plug#end()
