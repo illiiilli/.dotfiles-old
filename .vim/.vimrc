@@ -1,100 +1,20 @@
 " Author: Alan Chen
-" Alan's vimrc, based on Tim Pope's sensible.vim
-" sensible.vim - Defaults everyone can agree on
-" Maintainer:   Tim Pope <http://tpo.pe/>
-" Version:      1.2
+" Alan's vimrc.
+" This is a helpful resource:
+" https://gist.github.com/romainl/9ecd7b09a693816997ba
 
-if exists('g:loaded_sensible') || &compatible
-  finish
-else
-  let g:loaded_sensible = 'yes'
-endif
-
-if has('autocmd')
-  filetype plugin indent on
-endif
-if has('syntax') && !exists('g:syntax_on')
-  syntax enable
-endif
-
-" Use :help 'option' to see the documentation for the given option.
-
-set autoindent
-set backspace=indent,eol,start
-set complete-=i
-set smarttab
-
-set nrformats-=octal
-
-if !has('nvim') && &ttimeoutlen == -1
-  set ttimeout
-  set ttimeoutlen=100
-endif
-
-set incsearch
-" Use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
-endif
-
-set laststatus=2
-set ruler
-set wildmenu
-
-if !&scrolloff
-  set scrolloff=1
-endif
-if !&sidescrolloff
-  set sidescrolloff=5
-endif
-set display+=lastline
-
-if &encoding ==# 'latin1' && has('gui_running')
-  set encoding=utf-8
-endif
-
-if &listchars ==# 'eol:$'
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-endif
-
-if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j " Delete comment character when joining commented lines
-endif
-
-if has('path_extra')
-  setglobal tags-=./tags tags-=./tags; tags^=./tags;
-endif
-
-if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
-  set shell=/bin/bash
-endif
-
-set autoread
-
-if &history < 1000
-  set history=1000
-endif
-if &tabpagemax < 50
-  set tabpagemax=50
-endif
-if !empty(&viminfo)
-  set viminfo^=!
-endif
-set sessionoptions-=options
-
-" Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
-  set t_Co=16
-endif
-
-" Load matchit.vim, but only if the user hasn't installed a newer version.
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-  runtime! macros/matchit.vim
-endif
-
-inoremap <C-U> <C-G>u<C-U>
-
-" vim:set ft=vim et sw=2:
+call plug#begin()
+    Plug 'https://github.com/tpope/vim-sensible'
+    Plug 'https://github.com/nanotech/jellybeans.vim'
+    Plug 'https://github.com/tpope/vim-surround'
+    Plug 'https://github.com/tpope/vim-repeat'
+    Plug 'https://github.com/junegunn/goyo.vim'
+    Plug 'https://github.com/tpope/vim-commentary'
+    Plug 'https://github.com/itchyny/lightline.vim'
+    Plug 'https://github.com/tpope/vim-characterize'
+    Plug 'vim-utils/vim-troll-stopper'
+    Plug 'https://github.com/sheerun/vim-polyglot'
+call plug#end()
 
 " Alan's modifications start here:
 
@@ -119,6 +39,24 @@ colorscheme jellybeans
 " Remaps "jj" to <Esc> while in insert mode
 inoremap jj <Esc>
 
-call plug#begin()
-    Plug 'junegunn/goyo.vim'
-call plug#end()
+" FUNCTIONS
+"
+function! 
+
+" Map <F5> to compile files to .pdf
+" Markdown
+" LaTeX
+augroup Markup_Mappings
+    autocmd!
+    " Exports to .pdf and .html, respectively.
+    autocmd Filetype markdown,tex,latex,context,plaintex map <F5> :silent !pandoc<space>"<C-r>%"<space>-o<space>"<C-r>%.pdf"<Enter><Enter>
+    autocmd Filetype markdown map <S-F5> :silent !pandoc<space>"<C-r>%"<space>-o<space>"<C-r>%.html"<Enter><Enter>
+    " Replaces 0 width space (<200b>) with <space>
+    autocmd Filetype markdown map <F4> :%s/\%u200b/<space>/g<Enter>
+augroup END
+
+highlight TrollStopper ctermbg = red guibg = #FF0000
+
+set encoding=utf-8
+set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+set fileformats=unix,dos,mac
